@@ -140,6 +140,8 @@ BEGIN
         MENUITEM "Rotate Image",                ID_EDIT_ROTATEIMAGE
         MENUITEM "Place Bird",                  ID_EDIT_PLACEBIRD
         MENUITEM "Set Variables",               ID_EDIT_SETVARIABLES
+        MENUITEM "Warp Cup",                    ID_EDIT_WARPCUP
+        MENUITEM "Place Cup",                   ID_EDIT_PLACECUP
     END
     POPUP "&Movies"
     BEGIN

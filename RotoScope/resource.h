@@ -39,13 +39,15 @@
 #define ID_MOUSEMODE_STARBUCKS          32794
 #define ID_MOUSEMODE_STARBUCKS32795     32795
 #define ID_MOUSEMODE_STARBUCKS32796     32796
+#define ID_EDIT_WARPCUP                 32797
+#define ID_EDIT_PLACECUP                32798
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        132
-#define _APS_NEXT_COMMAND_VALUE         32797
+#define _APS_NEXT_COMMAND_VALUE         32799
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101
 #endif

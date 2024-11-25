@@ -51,6 +51,8 @@ BEGIN_MESSAGE_MAP(CRotoScopeDoc, CDocument)
 	ON_COMMAND(ID_EDIT_UNDO32793, &CRotoScopeDoc::OnEditUndo32793)
 	
 	ON_COMMAND(ID_MOUSEMODE_STARBUCKS32796, &CRotoScopeDoc::OnMousemodeStarbucks32796)
+	ON_COMMAND(ID_EDIT_WARPCUP, &CRotoScopeDoc::OnEditWarpcup)
+	ON_COMMAND(ID_EDIT_PLACECUP, &CRotoScopeDoc::OnEditPlacecup)
 END_MESSAGE_MAP()
 
 
@@ -70,6 +72,8 @@ CRotoScopeDoc::CRotoScopeDoc()
 	m_dot_count = 0;
 	m_bird.LoadFile(L"birdp.png");
 	m_starbucks.LoadFile(L"starbucksCup.png");	
+
+	m_moviemake.SetProfileName(L"profile720p.prx");
 
 	//OnEditSetvariables();
 }
@@ -454,7 +458,11 @@ void CRotoScopeDoc::Mouse(int p_x, int p_y)
 	{
 		DrawStarbucks(m_image, x, y);
 		UpdateAllViews(NULL);
+
+		// TODO:  Implement the Starbucks cup warping
+	
 	}
+	
 }
 
 
@@ -1044,12 +1052,67 @@ void CRotoScopeDoc::OnEditUndo32793()
 	}
 }
 
-
-
-
-
 void CRotoScopeDoc::OnMousemodeStarbucks32796()
 {
 	// TODO: Add your command handler code here
 	m_mode = 3;
 }
+
+
+void CRotoScopeDoc::OnEditWarpcup()
+{
+	// TODO: Add your command handler code here
+	m_isWarped = !m_isWarped;
+	UpdateAllViews(NULL);
+}
+
+//void CRotoScopeDoc::WarpStarbucks(CGrImage& image, int x1, int y1, double time)
+//{
+//	double frequency = 0.2;
+//	double amplitude = 20.0;
+//	double phaseShift = time * 3.14159 * 0.5;
+//
+//	for (int r = 0; r < m_starbucks.GetHeight(); r++)
+//	{
+//		for (int c = 0; c < m_starbucks.GetWidth(); c++)
+//		{
+//			if (m_starbucks[r][c * 4 + 3] >= 192)  // Check for non-transparent pixels
+//			{
+//				int newY = y1 + r + static_cast<int>(amplitude * sin(frequency * c + phaseShift));
+//				if (newY >= 0 && newY < image.GetHeight())
+//				{
+//					int newX = x1 + c;
+//					if (newX < image.GetWidth())
+//					{
+//						// Transfer pixel data
+//						image[newY][newX * 4] = m_starbucks[r][c * 4];
+//						image[newY][newX * 4 + 1] = m_starbucks[r][c * 4 + 1];
+//						image[newY][newX * 4 + 2] = m_starbucks[r][c * 4 + 2];
+//					}
+//				}
+//			}
+//		}
+//	}
+//}
+
+
+
+
+
+void CRotoScopeDoc::OnEditPlacecup()
+{
+	// TODO: Add your command handler code here
+	if (m_dlg.DoModal() == IDOK)
+	{
+		m_cupX = m_dlg.m_x1;  // Assuming m_dlg is your dialog where you get the position
+		m_cupY = m_dlg.m_y1;
+
+		DrawStarbucks(m_image, m_x1, m_y1);
+		UpdateAllViews(NULL);
+	}
+}
+
+
+
+
+

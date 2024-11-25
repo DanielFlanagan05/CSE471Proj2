@@ -73,6 +73,8 @@ private:
 	CGrImage			m_bird;
 	CGrImage			m_starbucks;
 
+	bool m_isWarped = false;
+
 	int m_x1;
 	int m_y1;
 	int m_x2;
@@ -85,6 +87,11 @@ private:
 
 	int m_mode;
 	int m_dot_count;
+
+
+	int m_cupX = -1;  
+	int m_cupY = -1;
+
 
 	std::stack<CGrImage>	m_images;
 
@@ -123,6 +130,10 @@ public:
 	afx_msg void OnMousemodeBird();
 	afx_msg void OnEditUndo32793();
 	afx_msg void OnMousemodeStarbucks32796();
+	afx_msg void OnEditWarpcup();
+
+	afx_msg void OnEditPlacecup();
+	
 };
 
 
