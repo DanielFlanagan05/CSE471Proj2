@@ -49,6 +49,8 @@ BEGIN_MESSAGE_MAP(CRotoScopeDoc, CDocument)
 	ON_COMMAND(ID_MOUSEMODE_LINE, &CRotoScopeDoc::OnMousemodeLine)
 	ON_COMMAND(ID_MOUSEMODE_BIRD, &CRotoScopeDoc::OnMousemodeBird)
 	ON_COMMAND(ID_EDIT_UNDO32793, &CRotoScopeDoc::OnEditUndo32793)
+	
+	ON_COMMAND(ID_MOUSEMODE_STARBUCKS32796, &CRotoScopeDoc::OnMousemodeStarbucks32796)
 END_MESSAGE_MAP()
 
 
@@ -67,6 +69,7 @@ CRotoScopeDoc::CRotoScopeDoc()
 	m_width = 1;
 	m_dot_count = 0;
 	m_bird.LoadFile(L"birdp.png");
+	m_starbucks.LoadFile(L"starbucksCup.png");	
 
 	//OnEditSetvariables();
 }
@@ -445,6 +448,11 @@ void CRotoScopeDoc::Mouse(int p_x, int p_y)
 	else if (m_mode == 2)
 	{
 		DrawBird(m_image, x, y);
+		UpdateAllViews(NULL);
+	}
+	else if (m_mode == 3)
+	{
+		DrawStarbucks(m_image, x, y);
 		UpdateAllViews(NULL);
 	}
 }
@@ -942,6 +950,41 @@ void CRotoScopeDoc::DrawBird(CGrImage &image, int x1, int y1)
 	}
 }
 
+void CRotoScopeDoc::DrawStarbucks(CGrImage& image, int x1, int y1)
+{
+	m_images.push(m_image);
+
+	// Define the scale factor (e.g., 0.5 for half size)
+	double scaleFactor = 0.25;
+
+	// Calculate the new dimensions
+	int newHeight = static_cast<int>(m_starbucks.GetHeight() * scaleFactor);
+	int newWidth = static_cast<int>(m_starbucks.GetWidth() * scaleFactor);
+
+	// Loop through the scaled image
+	for (int r = 0; r < newHeight; r++)
+	{
+		for (int c = 0; c < newWidth; c++)
+		{
+			// Calculate the corresponding pixel in the original image
+			int origR = static_cast<int>(r / scaleFactor);
+			int origC = static_cast<int>(c / scaleFactor);
+
+			// Make sure point is inside image
+			if (r + y1 < m_image.GetHeight() && c + x1 < m_image.GetWidth())
+			{
+				if (m_starbucks[origR][origC * 4 + 3] >= 192)
+				{
+					m_image[r + y1][(c + x1) * 3] = m_starbucks[origR][origC * 4];
+					m_image[r + y1][(c + x1) * 3 + 1] = m_starbucks[origR][origC * 4 + 1];
+					m_image[r + y1][(c + x1) * 3 + 2] = m_starbucks[origR][origC * 4 + 2];
+				}
+			}
+		}
+	}
+}
+
+
 
 void CRotoScopeDoc::OnEditRotateimage()
 {
@@ -999,4 +1042,14 @@ void CRotoScopeDoc::OnEditUndo32793()
 		m_images.pop();
 		UpdateAllViews(NULL);
 	}
+}
+
+
+
+
+
+void CRotoScopeDoc::OnMousemodeStarbucks32796()
+{
+	// TODO: Add your command handler code here
+	m_mode = 3;
 }

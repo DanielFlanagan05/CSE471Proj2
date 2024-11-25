@@ -36,13 +36,16 @@
 #define ID_MOUSEMODE_LINE               32791
 #define ID_MOUSEMODE_BIRD               32792
 #define ID_EDIT_UNDO32793               32793
+#define ID_MOUSEMODE_STARBUCKS          32794
+#define ID_MOUSEMODE_STARBUCKS32795     32795
+#define ID_MOUSEMODE_STARBUCKS32796     32796
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        132
-#define _APS_NEXT_COMMAND_VALUE         32794
+#define _APS_NEXT_COMMAND_VALUE         32797
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
