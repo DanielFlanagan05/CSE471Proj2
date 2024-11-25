@@ -123,6 +123,11 @@ public:
 	void DrawBird(CGrImage &image, int x1, int y1);
 	void DrawStarbucks(CGrImage& image, int x1, int y1);
 	void RotateImage(CGrImage &image, int theta);
+
+	void WarpImage(CGrImage& image);
+
+
+
 	afx_msg void OnEditRotateimage();
 	afx_msg void OnEditSetvariables();
 	afx_msg void OnMousemodePen();
@@ -131,6 +136,8 @@ public:
 	afx_msg void OnEditUndo32793();
 	afx_msg void OnMousemodeStarbucks32796();
 	afx_msg void OnEditWarpcup();
+
+
 
 	afx_msg void OnEditPlacecup();
 	
