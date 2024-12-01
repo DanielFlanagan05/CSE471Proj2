@@ -50,7 +50,6 @@ BEGIN_MESSAGE_MAP(CRotoScopeDoc, CDocument)
 	ON_COMMAND(ID_MOUSEMODE_BIRD, &CRotoScopeDoc::OnMousemodeBird)
 	ON_COMMAND(ID_EDIT_UNDO32793, &CRotoScopeDoc::OnEditUndo32793)
 	ON_COMMAND(ID_MOUSEMODE_PHASER, &CRotoScopeDoc::OnMousemodePhaser)
-	ON_COMMAND(ID_EDIT_MOVEPHASER, &CRotoScopeDoc::OnEditMovephaser)
 END_MESSAGE_MAP()
 
 
@@ -1038,7 +1037,3 @@ void CRotoScopeDoc::OnEditUndo32793()
 }
 
 
-void CRotoScopeDoc::OnEditMovephaser()
-{
-	// TODO: Add your command handler code here
-}

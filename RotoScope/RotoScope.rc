@@ -140,7 +140,6 @@ BEGIN
         MENUITEM "Rotate Image",                ID_EDIT_ROTATEIMAGE
         MENUITEM "Place Bird",                  ID_EDIT_PLACEBIRD
         MENUITEM "Set Variables",               ID_EDIT_SETVARIABLES
-        MENUITEM "Move Phaser",                 ID_EDIT_MOVEPHASER
     END
     POPUP "&Movies"
     BEGIN

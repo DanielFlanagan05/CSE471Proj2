@@ -123,7 +123,6 @@ public:
 	afx_msg void OnMousemodeBird();
 	afx_msg void OnEditUndo32793();
 	afx_msg void OnMousemodePhaser();
-	afx_msg void OnEditMovephaser();
 };
 
 
