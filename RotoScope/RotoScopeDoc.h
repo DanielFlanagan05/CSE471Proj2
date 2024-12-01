@@ -71,6 +71,7 @@ private:
 	CGrImage			m_initial;
 	CLineDlg			m_dlg;
 	CGrImage			m_bird;
+	CGrImage			m_phaser;
 
 	int m_x1;
 	int m_y1;
@@ -113,6 +114,7 @@ public:
 	afx_msg void OnEditDrawline();
 	afx_msg void OnEditPlacebird();
 	void DrawBird(CGrImage &image, int x1, int y1);
+	void DrawPhaser(CGrImage& image, int x1, int y1);
 	void RotateImage(CGrImage &image, int theta);
 	afx_msg void OnEditRotateimage();
 	afx_msg void OnEditSetvariables();
@@ -120,6 +122,8 @@ public:
 	afx_msg void OnMousemodeLine();
 	afx_msg void OnMousemodeBird();
 	afx_msg void OnEditUndo32793();
+	afx_msg void OnMousemodePhaser();
+	afx_msg void OnEditMovephaser();
 };
 
 

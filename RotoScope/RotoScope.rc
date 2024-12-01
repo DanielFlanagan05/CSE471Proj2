@@ -63,7 +63,9 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\RotoScope.ico"
+
 IDR_RotoScopeTYPE       ICON                    "res\\RotoScopeDoc.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -71,6 +73,7 @@ IDR_RotoScopeTYPE       ICON                    "res\\RotoScopeDoc.ico"
 //
 
 IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -137,6 +140,7 @@ BEGIN
         MENUITEM "Rotate Image",                ID_EDIT_ROTATEIMAGE
         MENUITEM "Place Bird",                  ID_EDIT_PLACEBIRD
         MENUITEM "Set Variables",               ID_EDIT_SETVARIABLES
+        MENUITEM "Move Phaser",                 ID_EDIT_MOVEPHASER
     END
     POPUP "&Movies"
     BEGIN
@@ -163,6 +167,7 @@ BEGIN
         MENUITEM "Pen",                         ID_MOUSEMODE_PEN
         MENUITEM "Line",                        ID_MOUSEMODE_LINE
         MENUITEM "Bird",                        ID_MOUSEMODE_BIRD
+        MENUITEM "Phaser",                      ID_MOUSEMODE_PHASER
     END
     POPUP "&View"
     BEGIN

@@ -49,6 +49,8 @@ BEGIN_MESSAGE_MAP(CRotoScopeDoc, CDocument)
 	ON_COMMAND(ID_MOUSEMODE_LINE, &CRotoScopeDoc::OnMousemodeLine)
 	ON_COMMAND(ID_MOUSEMODE_BIRD, &CRotoScopeDoc::OnMousemodeBird)
 	ON_COMMAND(ID_EDIT_UNDO32793, &CRotoScopeDoc::OnEditUndo32793)
+	ON_COMMAND(ID_MOUSEMODE_PHASER, &CRotoScopeDoc::OnMousemodePhaser)
+	ON_COMMAND(ID_EDIT_MOVEPHASER, &CRotoScopeDoc::OnEditMovephaser)
 END_MESSAGE_MAP()
 
 
@@ -67,6 +69,7 @@ CRotoScopeDoc::CRotoScopeDoc()
 	m_width = 1;
 	m_dot_count = 0;
 	m_bird.LoadFile(L"birdp.png");
+	m_phaser.LoadFile(L"tngdustbuster.png");
 
 	//OnEditSetvariables();
 }
@@ -445,6 +448,12 @@ void CRotoScopeDoc::Mouse(int p_x, int p_y)
 	else if (m_mode == 2)
 	{
 		DrawBird(m_image, x, y);
+		UpdateAllViews(NULL);
+	}
+
+	else if (m_mode == 3)
+	{
+		DrawPhaser(m_image, x, y);
 		UpdateAllViews(NULL);
 	}
 }
@@ -942,6 +951,29 @@ void CRotoScopeDoc::DrawBird(CGrImage &image, int x1, int y1)
 	}
 }
 
+void CRotoScopeDoc::DrawPhaser(CGrImage& image, int x1, int y1)
+{
+	// Allow undo of placing
+	m_images.push(m_image);
+	for (int r = 0; r < m_phaser.GetHeight(); r++)
+	{
+		for (int c = 0; c < m_phaser.GetWidth(); c++)
+		{
+			// Make sure point is inside image
+			if (r + y1 < m_image.GetHeight() && c + x1 < m_image.GetWidth())
+			{
+				if (m_phaser[r][c * 4 + 3] >= 192) // Check alpha channel
+				{
+					m_image[r + y1][(c + x1) * 3] = m_phaser[r][c * 4];
+					m_image[r + y1][(c + x1) * 3 + 1] = m_phaser[r][c * 4 + 1];
+					m_image[r + y1][(c + x1) * 3 + 2] = m_phaser[r][c * 4 + 2];
+				}
+			}
+		}
+	}
+}
+
+
 
 void CRotoScopeDoc::OnEditRotateimage()
 {
@@ -990,6 +1022,10 @@ void CRotoScopeDoc::OnMousemodeBird()
 	m_mode = 2;
 }
 
+void CRotoScopeDoc::OnMousemodePhaser()
+{
+	m_mode = 3;
+}
 
 void CRotoScopeDoc::OnEditUndo32793()
 {
@@ -999,4 +1035,10 @@ void CRotoScopeDoc::OnEditUndo32793()
 		m_images.pop();
 		UpdateAllViews(NULL);
 	}
+}
+
+
+void CRotoScopeDoc::OnEditMovephaser()
+{
+	// TODO: Add your command handler code here
 }
