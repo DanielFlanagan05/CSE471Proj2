@@ -118,6 +118,7 @@ public:
 	void DrawBird(CGrImage &image, int x1, int y1);
 	CGrImage ScaleImage(const CGrImage& image, double scale);
 	void DrawPhaser(CGrImage& image, int x1, int y1);
+	void DrawLaserBeam(CGrImage& image, int x1, int y1);
 	void RotateImage(CGrImage &image, int theta);
 	afx_msg void OnEditRotateimage();
 	afx_msg void OnEditSetvariables();
@@ -128,6 +129,7 @@ public:
 	afx_msg void OnMousemodePhaser();
 	afx_msg void OnPhaserFire();
 	afx_msg void OnEditSetphasersize();
+	afx_msg void OnMousemodeLaserbeam();
 };
 
 

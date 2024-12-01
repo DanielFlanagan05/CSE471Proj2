@@ -168,10 +168,7 @@ BEGIN
         MENUITEM "Line",                        ID_MOUSEMODE_LINE
         MENUITEM "Bird",                        ID_MOUSEMODE_BIRD
         MENUITEM "Phaser",                      ID_MOUSEMODE_PHASER
-    END
-    POPUP "Phaser"
-    BEGIN
-        MENUITEM "Fire ",                       ID_PHASER_FIRE
+        MENUITEM "Laser Beam",                  ID_MOUSEMODE_LASERBEAM
     END
     POPUP "&View"
     BEGIN

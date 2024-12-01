@@ -51,8 +51,8 @@ BEGIN_MESSAGE_MAP(CRotoScopeDoc, CDocument)
 	ON_COMMAND(ID_MOUSEMODE_BIRD, &CRotoScopeDoc::OnMousemodeBird)
 	ON_COMMAND(ID_EDIT_UNDO32793, &CRotoScopeDoc::OnEditUndo32793)
 	ON_COMMAND(ID_MOUSEMODE_PHASER, &CRotoScopeDoc::OnMousemodePhaser)
-	ON_COMMAND(ID_PHASER_FIRE, &CRotoScopeDoc::OnPhaserFire)
 	ON_COMMAND(ID_EDIT_SETPHASERSIZE, &CRotoScopeDoc::OnEditSetphasersize)
+	ON_COMMAND(ID_MOUSEMODE_LASERBEAM, &CRotoScopeDoc::OnMousemodeLaserbeam)
 END_MESSAGE_MAP()
 
 
@@ -458,6 +458,11 @@ void CRotoScopeDoc::Mouse(int p_x, int p_y)
 	else if (m_mode == 3)
 	{
 		DrawPhaser(m_image, x, y);
+		UpdateAllViews(NULL);
+	}
+
+	{
+		DrawLaserBeam(m_image, x, y);
 		UpdateAllViews(NULL);
 	}
 }
@@ -961,7 +966,7 @@ CGrImage CRotoScopeDoc::ScaleImage(const CGrImage& image, double scale)
 	int newHeight = static_cast<int>(image.GetHeight() * scale);
 
 	CGrImage scaledImage;
-	scaledImage.SetSize(newWidth, newHeight, 4); // Fixed color depth to 4 for RGBA
+	scaledImage.SetSize(newWidth, newHeight, 4); 
 
 	double xScale = static_cast<double>(image.GetWidth()) / newWidth;
 	double yScale = static_cast<double>(image.GetHeight()) / newHeight;
@@ -978,11 +983,10 @@ CGrImage CRotoScopeDoc::ScaleImage(const CGrImage& image, double scale)
 			if (srcC >= image.GetWidth())
 				srcC = image.GetWidth() - 1;
 
-			// Copy pixel data (RGBA)
-			scaledImage[r][c * 4] = image[srcR][srcC * 4];     // Red
-			scaledImage[r][c * 4 + 1] = image[srcR][srcC * 4 + 1]; // Green
-			scaledImage[r][c * 4 + 2] = image[srcR][srcC * 4 + 2]; // Blue
-			scaledImage[r][c * 4 + 3] = image[srcR][srcC * 4 + 3]; // Alpha
+			scaledImage[r][c * 4] = image[srcR][srcC * 4];    
+			scaledImage[r][c * 4 + 1] = image[srcR][srcC * 4 + 1]; 
+			scaledImage[r][c * 4 + 2] = image[srcR][srcC * 4 + 2]; 
+			scaledImage[r][c * 4 + 3] = image[srcR][srcC * 4 + 3]; 
 		}
 	}
 
@@ -993,31 +997,58 @@ CGrImage CRotoScopeDoc::ScaleImage(const CGrImage& image, double scale)
 
 void CRotoScopeDoc::DrawPhaser(CGrImage& image, int x1, int y1)
 {
-	// Allow undo of placing
 	m_images.push(m_image);
 
-	// Scale the phaser image
 	CGrImage scaledPhaser = ScaleImage(m_phaser, m_phaserScale);
 
-	// Draw the scaled phaser image onto m_image at position (x1, y1)
 	for (int r = 0; r < scaledPhaser.GetHeight(); r++)
 	{
 		for (int c = 0; c < scaledPhaser.GetWidth(); c++)
 		{
-			// Make sure point is inside image
 			if (r + y1 < m_image.GetHeight() && c + x1 < m_image.GetWidth())
 			{
-				if (scaledPhaser[r][c * 4 + 3] >= 192) // Check alpha channel
+				if (scaledPhaser[r][c * 4 + 3] >= 192) 
 				{
-					m_image[r + y1][(c + x1) * 3] = scaledPhaser[r][c * 4];     // Red
-					m_image[r + y1][(c + x1) * 3 + 1] = scaledPhaser[r][c * 4 + 1]; // Green
-					m_image[r + y1][(c + x1) * 3 + 2] = scaledPhaser[r][c * 4 + 2]; // Blue
+					m_image[r + y1][(c + x1) * 3] = scaledPhaser[r][c * 4];    
+					m_image[r + y1][(c + x1) * 3 + 1] = scaledPhaser[r][c * 4 + 1]; 
+					m_image[r + y1][(c + x1) * 3 + 2] = scaledPhaser[r][c * 4 + 2]; 
 				}
 			}
 		}
 	}
 }
 
+void CRotoScopeDoc::DrawLaserBeam(CGrImage& image, int x1, int y1)
+{
+	m_images.push(m_image);
+
+	int width = 70;
+	int height = 10;
+
+	for (int r = 0; r < height; r++)
+	{
+		for (int c = 0; c < width; c++)
+		{
+			int x = x1 + c - width / 2;
+			int y = y1 + r - height / 2;
+
+			if (x >= 0 && x < image.GetWidth() && y >= 0 && y < image.GetHeight())
+			{
+				double distance = abs(c - width / 2);
+				double maxDistance = width / 2.0;
+				double factor = (1.0 - (distance / maxDistance)) * 0.8 + 0.2; 
+
+				int red = static_cast<int>(255 * factor);
+				if (red > 255) red = 255;
+				if (red < 0) red = 0;
+
+				image[y][x * 3] = 0;       
+				image[y][x * 3 + 1] = 0;   
+				image[y][x * 3 + 2] = red; 
+			}
+		}
+	}
+}
 
 
 
@@ -1073,6 +1104,12 @@ void CRotoScopeDoc::OnMousemodePhaser()
 	m_mode = 3;
 }
 
+void CRotoScopeDoc::OnMousemodeLaserbeam()
+{
+	m_mode = 4;
+}
+
+
 void CRotoScopeDoc::OnEditUndo32793()
 {
 	if (!m_images.empty())
@@ -1081,14 +1118,6 @@ void CRotoScopeDoc::OnEditUndo32793()
 		m_images.pop();
 		UpdateAllViews(NULL);
 	}
-}
-
-
-
-
-void CRotoScopeDoc::OnPhaserFire()
-{
-	// TODO: Add your command handler code here
 }
 
 
@@ -1101,4 +1130,6 @@ void CRotoScopeDoc::OnEditSetphasersize()
 		m_phaserScale = dlg.m_scale;
 	}
 }
+
+
 
