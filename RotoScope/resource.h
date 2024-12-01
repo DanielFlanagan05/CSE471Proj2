@@ -2,6 +2,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by RotoScope.rc
 //
+#define IDD_PHASERSIZEDLG               7
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define IDR_MAINFRAME                   128
@@ -10,6 +11,7 @@
 #define IDC_X1                          1000
 #define IDC_X2                          1001
 #define IDC_Y1                          1002
+#define IDC_SCALE                       1002
 #define IDC_Y2                          1003
 #define IDC_B                           1004
 #define IDC_G                           1005
@@ -38,14 +40,18 @@
 #define ID_EDIT_UNDO32793               32793
 #define ID_MOUSEMODE_PHASER             32794
 #define ID_EDIT_MOVEPHASER              32795
+#define ID_MOUSEMODE_FIREPHASER         32796
+#define ID_PHASER_FIRE                  32797
+#define ID_EDIT_RESIZEPHASER            32798
+#define ID_EDIT_SETPHASERSIZE           32799
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        132
-#define _APS_NEXT_COMMAND_VALUE         32796
-#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_RESOURCE_VALUE        134
+#define _APS_NEXT_COMMAND_VALUE         32800
+#define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

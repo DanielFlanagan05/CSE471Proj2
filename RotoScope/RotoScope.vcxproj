@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="audio\DirSoundSource.cpp" />
+    <ClCompile Include="CPhaserSizeDlg.cpp" />
     <ClCompile Include="graphics\GrImage.cpp" />
     <ClCompile Include="LineDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="audio\DirSoundSource.h" />
+    <ClInclude Include="CPhaserSizeDlg.h" />
     <ClInclude Include="graphics\GrImage.h" />
     <ClInclude Include="LineDlg.h" />
     <ClInclude Include="MainFrm.h" />

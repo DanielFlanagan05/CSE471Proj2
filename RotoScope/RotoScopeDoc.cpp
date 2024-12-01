@@ -7,6 +7,7 @@
 
 #include "RotoScopeDoc.h"
 #include "xmlhelp.h"
+#include <CPhaserSizeDlg.h>
 
 
 #ifdef _DEBUG
@@ -50,6 +51,8 @@ BEGIN_MESSAGE_MAP(CRotoScopeDoc, CDocument)
 	ON_COMMAND(ID_MOUSEMODE_BIRD, &CRotoScopeDoc::OnMousemodeBird)
 	ON_COMMAND(ID_EDIT_UNDO32793, &CRotoScopeDoc::OnEditUndo32793)
 	ON_COMMAND(ID_MOUSEMODE_PHASER, &CRotoScopeDoc::OnMousemodePhaser)
+	ON_COMMAND(ID_PHASER_FIRE, &CRotoScopeDoc::OnPhaserFire)
+	ON_COMMAND(ID_EDIT_SETPHASERSIZE, &CRotoScopeDoc::OnEditSetphasersize)
 END_MESSAGE_MAP()
 
 
@@ -69,6 +72,8 @@ CRotoScopeDoc::CRotoScopeDoc()
 	m_dot_count = 0;
 	m_bird.LoadFile(L"birdp.png");
 	m_phaser.LoadFile(L"tngdustbuster.png");
+
+	m_phaserScale = 1.0;
 
 	//OnEditSetvariables();
 }
@@ -950,27 +955,69 @@ void CRotoScopeDoc::DrawBird(CGrImage &image, int x1, int y1)
 	}
 }
 
+CGrImage CRotoScopeDoc::ScaleImage(const CGrImage& image, double scale)
+{
+	int newWidth = static_cast<int>(image.GetWidth() * scale);
+	int newHeight = static_cast<int>(image.GetHeight() * scale);
+
+	CGrImage scaledImage;
+	scaledImage.SetSize(newWidth, newHeight, 4); // Fixed color depth to 4 for RGBA
+
+	double xScale = static_cast<double>(image.GetWidth()) / newWidth;
+	double yScale = static_cast<double>(image.GetHeight()) / newHeight;
+
+	for (int r = 0; r < newHeight; r++)
+	{
+		for (int c = 0; c < newWidth; c++)
+		{
+			int srcR = static_cast<int>(r * yScale);
+			int srcC = static_cast<int>(c * xScale);
+
+			if (srcR >= image.GetHeight())
+				srcR = image.GetHeight() - 1;
+			if (srcC >= image.GetWidth())
+				srcC = image.GetWidth() - 1;
+
+			// Copy pixel data (RGBA)
+			scaledImage[r][c * 4] = image[srcR][srcC * 4];     // Red
+			scaledImage[r][c * 4 + 1] = image[srcR][srcC * 4 + 1]; // Green
+			scaledImage[r][c * 4 + 2] = image[srcR][srcC * 4 + 2]; // Blue
+			scaledImage[r][c * 4 + 3] = image[srcR][srcC * 4 + 3]; // Alpha
+		}
+	}
+
+	return scaledImage;
+}
+
+
+
 void CRotoScopeDoc::DrawPhaser(CGrImage& image, int x1, int y1)
 {
 	// Allow undo of placing
 	m_images.push(m_image);
-	for (int r = 0; r < m_phaser.GetHeight(); r++)
+
+	// Scale the phaser image
+	CGrImage scaledPhaser = ScaleImage(m_phaser, m_phaserScale);
+
+	// Draw the scaled phaser image onto m_image at position (x1, y1)
+	for (int r = 0; r < scaledPhaser.GetHeight(); r++)
 	{
-		for (int c = 0; c < m_phaser.GetWidth(); c++)
+		for (int c = 0; c < scaledPhaser.GetWidth(); c++)
 		{
 			// Make sure point is inside image
 			if (r + y1 < m_image.GetHeight() && c + x1 < m_image.GetWidth())
 			{
-				if (m_phaser[r][c * 4 + 3] >= 192) // Check alpha channel
+				if (scaledPhaser[r][c * 4 + 3] >= 192) // Check alpha channel
 				{
-					m_image[r + y1][(c + x1) * 3] = m_phaser[r][c * 4];
-					m_image[r + y1][(c + x1) * 3 + 1] = m_phaser[r][c * 4 + 1];
-					m_image[r + y1][(c + x1) * 3 + 2] = m_phaser[r][c * 4 + 2];
+					m_image[r + y1][(c + x1) * 3] = scaledPhaser[r][c * 4];     // Red
+					m_image[r + y1][(c + x1) * 3 + 1] = scaledPhaser[r][c * 4 + 1]; // Green
+					m_image[r + y1][(c + x1) * 3 + 2] = scaledPhaser[r][c * 4 + 2]; // Blue
 				}
 			}
 		}
 	}
 }
+
 
 
 
@@ -1036,4 +1083,22 @@ void CRotoScopeDoc::OnEditUndo32793()
 	}
 }
 
+
+
+
+void CRotoScopeDoc::OnPhaserFire()
+{
+	// TODO: Add your command handler code here
+}
+
+
+void CRotoScopeDoc::OnEditSetphasersize()
+{
+	CPhaserSizeDlg dlg;
+	dlg.m_scale = m_phaserScale;  // Initialize with current scale
+	if (dlg.DoModal() == IDOK)
+	{
+		m_phaserScale = dlg.m_scale;
+	}
+}
 

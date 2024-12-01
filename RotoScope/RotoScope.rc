@@ -140,6 +140,7 @@ BEGIN
         MENUITEM "Rotate Image",                ID_EDIT_ROTATEIMAGE
         MENUITEM "Place Bird",                  ID_EDIT_PLACEBIRD
         MENUITEM "Set Variables",               ID_EDIT_SETVARIABLES
+        MENUITEM "Set Phaser Size",             ID_EDIT_SETPHASERSIZE
     END
     POPUP "&Movies"
     BEGIN
@@ -167,6 +168,10 @@ BEGIN
         MENUITEM "Line",                        ID_MOUSEMODE_LINE
         MENUITEM "Bird",                        ID_MOUSEMODE_BIRD
         MENUITEM "Phaser",                      ID_MOUSEMODE_PHASER
+    END
+    POPUP "Phaser"
+    BEGIN
+        MENUITEM "Fire ",                       ID_PHASER_FIRE
     END
     POPUP "&View"
     BEGIN
@@ -251,6 +256,17 @@ BEGIN
     EDITTEXT        IDC_W,37,72,40,14,ES_AUTOHSCROLL
 END
 
+IDD_PHASERSIZEDLG DIALOGEX 0, 0, 127, 64
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Enter Phaser Size"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,43,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,70,43,50,14
+    LTEXT           "Scale",IDC_STATIC,15,22,26,8
+    EDITTEXT        IDC_SCALE,37,22,58,14,ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -314,6 +330,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 94
     END
+
+    IDD_PHASERSIZEDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 120
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 57
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -324,6 +348,11 @@ END
 //
 
 IDD_LINEDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PHASERSIZEDLG AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
