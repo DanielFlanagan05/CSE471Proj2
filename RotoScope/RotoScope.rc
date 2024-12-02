@@ -169,6 +169,7 @@ BEGIN
         MENUITEM "Bird",                        ID_MOUSEMODE_BIRD
         MENUITEM "Phaser",                      ID_MOUSEMODE_PHASER
         MENUITEM "Laser Beam",                  ID_MOUSEMODE_LASERBEAM
+        MENUITEM "Warp",                        ID_MOUSEMODE_WARP
     END
     POPUP "&View"
     BEGIN

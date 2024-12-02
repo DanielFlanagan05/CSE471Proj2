@@ -53,6 +53,7 @@ BEGIN_MESSAGE_MAP(CRotoScopeDoc, CDocument)
 	ON_COMMAND(ID_MOUSEMODE_PHASER, &CRotoScopeDoc::OnMousemodePhaser)
 	ON_COMMAND(ID_EDIT_SETPHASERSIZE, &CRotoScopeDoc::OnEditSetphasersize)
 	ON_COMMAND(ID_MOUSEMODE_LASERBEAM, &CRotoScopeDoc::OnMousemodeLaserbeam)
+	ON_COMMAND(ID_MOUSEMODE_WARP, &CRotoScopeDoc::OnMousemodeWarp)
 END_MESSAGE_MAP()
 
 
@@ -461,8 +462,16 @@ void CRotoScopeDoc::Mouse(int p_x, int p_y)
 		UpdateAllViews(NULL);
 	}
 
+	else if (m_mode == 4)
 	{
 		DrawLaserBeam(m_image, x, y);
+		UpdateAllViews(NULL);
+	}
+
+	else if (m_mode == 5)
+	{
+		// Warp mode
+		ApplyWarpEffect(x, y);
 		UpdateAllViews(NULL);
 	}
 }
@@ -1109,6 +1118,11 @@ void CRotoScopeDoc::OnMousemodeLaserbeam()
 	m_mode = 4;
 }
 
+void CRotoScopeDoc::OnMousemodeWarp()
+{
+	m_mode = 5;
+}
+
 
 void CRotoScopeDoc::OnEditUndo32793()
 {
@@ -1124,7 +1138,7 @@ void CRotoScopeDoc::OnEditUndo32793()
 void CRotoScopeDoc::OnEditSetphasersize()
 {
 	CPhaserSizeDlg dlg;
-	dlg.m_scale = m_phaserScale;  // Initialize with current scale
+	dlg.m_scale = m_phaserScale;  
 	if (dlg.DoModal() == IDOK)
 	{
 		m_phaserScale = dlg.m_scale;
@@ -1132,4 +1146,81 @@ void CRotoScopeDoc::OnEditSetphasersize()
 }
 
 
+void CRotoScopeDoc::ApplyWarpEffect(int centerX, int centerY)
+{
+	m_images.push(m_image);
 
+	int width = m_image.GetWidth();
+	int height = m_image.GetHeight();
+
+	CGrImage warpedImage;
+	warpedImage.SetSize(width, height, 3);
+
+	// Ellipse dimensions
+	// Half of width
+	double a = 60.0;  
+	// Half of height
+	double b = 10.0;  
+	// Warp effect strength
+	double strength = 0.3;
+
+	const double PI = 3.14159265358979323846;
+
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			double dx = x - centerX;
+			double dy = y - centerY;
+
+			double normalizedDistanceSquared = (dx * dx) / (a * a) + (dy * dy) / (b * b);
+
+			if (normalizedDistanceSquared <= 1.0)
+			{
+				double r = sqrt(normalizedDistanceSquared);
+				double theta = r * (PI / 2.0);
+
+				double factor = pow(cos(theta), strength);
+
+				double srcX = centerX + dx * factor;
+				double srcY = centerY + dy * factor;
+
+				int x0 = (int)floor(srcX);
+				int y0 = (int)floor(srcY);
+				int x1 = x0 + 1;
+				int y1 = y0 + 1;
+
+				double fx = srcX - x0;
+				double fy = srcY - y0;
+
+				for (int c = 0; c < 3; c++)
+				{
+					double value = 0.0;
+
+					if (x0 >= 0 && x0 < width && y0 >= 0 && y0 < height)
+						value += (1 - fx) * (1 - fy) * m_image[y0][x0 * 3 + c];
+
+					if (x1 >= 0 && x1 < width && y0 >= 0 && y0 < height)
+						value += fx * (1 - fy) * m_image[y0][x1 * 3 + c];
+
+					if (x0 >= 0 && x0 < width && y1 >= 0 && y1 < height)
+						value += (1 - fx) * fy * m_image[y1][x0 * 3 + c];
+
+					if (x1 >= 0 && x1 < width && y1 >= 0 && y1 < height)
+						value += fx * fy * m_image[y1][x1 * 3 + c];
+
+					warpedImage[y][x * 3 + c] = (unsigned char)value;
+				}
+			}
+			else
+			{
+				for (int c = 0; c < 3; c++)
+				{
+					warpedImage[y][x * 3 + c] = m_image[y][x * 3 + c];
+				}
+			}
+		}
+	}
+
+	m_image = warpedImage;
+}

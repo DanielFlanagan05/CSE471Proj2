@@ -130,6 +130,8 @@ public:
 	afx_msg void OnPhaserFire();
 	afx_msg void OnEditSetphasersize();
 	afx_msg void OnMousemodeLaserbeam();
+	afx_msg void OnMousemodeWarp();
+	void ApplyWarpEffect(int centerX, int centerY);
 };
 
 
