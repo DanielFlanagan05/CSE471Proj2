@@ -968,32 +968,57 @@ void CRotoScopeDoc::DrawStarbucks(CGrImage& image, int x1, int y1)
 {
 	m_images.push(m_image);
 
-	double scaleFactor = 0.25;
 
+	CGrImage scaledCup = ScaleImage(m_starbucks, m_cupScale);
 
-	int newHeight = static_cast<int>(m_starbucks.GetHeight() * scaleFactor);
-	int newWidth = static_cast<int>(m_starbucks.GetWidth() * scaleFactor);
+	for (int r = 0; r < scaledCup.GetHeight(); r++)
+	{
+		for (int c = 0; c < scaledCup.GetWidth(); c++)
+		{
+			if (r + y1 < m_image.GetHeight() && c + x1 < m_image.GetWidth())
+			{
+				if (scaledCup[r][c * 4 + 3] >= 192)
+				{
+					m_image[r + y1][(c + x1) * 3] = scaledCup[r][c * 4];
+					m_image[r + y1][(c + x1) * 3 + 1] = scaledCup[r][c * 4 + 1];
+					m_image[r + y1][(c + x1) * 3 + 2] = scaledCup[r][c * 4 + 2];
+				}
+			}
+		}
+	}
+}
 
+CGrImage CRotoScopeDoc::ScaleImage(const CGrImage& image, double scale)
+{
+	int newWidth = static_cast<int>(image.GetWidth() * scale);
+	int newHeight = static_cast<int>(image.GetHeight() * scale);
+
+	CGrImage scaledImage;
+	scaledImage.SetSize(newWidth, newHeight, 4);
+
+	double xScale = static_cast<double>(image.GetWidth()) / newWidth;
+	double yScale = static_cast<double>(image.GetHeight()) / newHeight;
 
 	for (int r = 0; r < newHeight; r++)
 	{
 		for (int c = 0; c < newWidth; c++)
 		{
-			
-			int origR = static_cast<int>(r / scaleFactor);
-			int origC = static_cast<int>(c / scaleFactor);
+			int srcR = static_cast<int>(r * yScale);
+			int srcC = static_cast<int>(c * xScale);
 
-			if (r + y1 < m_image.GetHeight() && c + x1 < m_image.GetWidth())
-			{
-				if (m_starbucks[origR][origC * 4 + 3] >= 192)
-				{
-					m_image[r + y1][(c + x1) * 3] = m_starbucks[origR][origC * 4];
-					m_image[r + y1][(c + x1) * 3 + 1] = m_starbucks[origR][origC * 4 + 1];
-					m_image[r + y1][(c + x1) * 3 + 2] = m_starbucks[origR][origC * 4 + 2];
-				}
-			}
+			if (srcR >= image.GetHeight())
+				srcR = image.GetHeight() - 1;
+			if (srcC >= image.GetWidth())
+				srcC = image.GetWidth() - 1;
+
+			scaledImage[r][c * 4] = image[srcR][srcC * 4];
+			scaledImage[r][c * 4 + 1] = image[srcR][srcC * 4 + 1];
+			scaledImage[r][c * 4 + 2] = image[srcR][srcC * 4 + 2];
+			scaledImage[r][c * 4 + 3] = image[srcR][srcC * 4 + 3];
 		}
 	}
+
+	return scaledImage;
 }
 
 

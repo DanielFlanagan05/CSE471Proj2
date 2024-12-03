@@ -124,6 +124,7 @@ public:
 	afx_msg void OnEditPlacebird();
 	void DrawBird(CGrImage &image, int x1, int y1);
 	void DrawStarbucks(CGrImage& image, int x1, int y1);
+	CGrImage ScaleImage(const CGrImage& image, double scale);
 	void RotateImage(CGrImage &image, int theta);
 
 	void WarpImage(CGrImage& image);
