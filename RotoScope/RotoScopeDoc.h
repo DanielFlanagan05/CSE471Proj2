@@ -92,6 +92,8 @@ private:
 	int m_cupX = -1;  
 	int m_cupY = -1;
 
+	double m_cupScale = 1.0;
+
 
 	std::stack<CGrImage>	m_images;
 
@@ -141,6 +143,7 @@ public:
 
 	afx_msg void OnEditPlacecup();
 	
+	afx_msg void OnEditScalecup();
 };
 
 

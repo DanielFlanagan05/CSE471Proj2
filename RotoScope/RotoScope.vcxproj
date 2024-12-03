@@ -142,6 +142,7 @@
     <ClCompile Include="graphics\GrImage.cpp" />
     <ClCompile Include="LineDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="ScaleCupDlg.cpp" />
     <ClCompile Include="video\MovieMake.cpp" />
     <ClCompile Include="video\MovieSource.cpp" />
     <ClCompile Include="RotoScope.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="graphics\GrImage.h" />
     <ClInclude Include="LineDlg.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="ScaleCupDlg.h" />
     <ClInclude Include="video\MovieMake.h" />
     <ClInclude Include="video\MovieSource.h" />
     <ClInclude Include="Resource.h" />

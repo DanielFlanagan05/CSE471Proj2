@@ -7,6 +7,7 @@
 
 #include "RotoScopeDoc.h"
 #include "xmlhelp.h"
+#include "ScaleCupDlg.h"
 
 
 #ifdef _DEBUG
@@ -53,6 +54,7 @@ BEGIN_MESSAGE_MAP(CRotoScopeDoc, CDocument)
 	ON_COMMAND(ID_MOUSEMODE_STARBUCKS32796, &CRotoScopeDoc::OnMousemodeStarbucks32796)
 	ON_COMMAND(ID_EDIT_WARPCUP, &CRotoScopeDoc::OnEditWarpcup)
 	ON_COMMAND(ID_EDIT_PLACECUP, &CRotoScopeDoc::OnEditPlacecup)
+	ON_COMMAND(ID_EDIT_SCALECUP, &CRotoScopeDoc::OnEditScalecup)
 END_MESSAGE_MAP()
 
 
@@ -1104,24 +1106,20 @@ void CRotoScopeDoc::WarpImage(CGrImage& image)
 	image.Copy(warpedImage);
 }
 
-
-
-
-
 void CRotoScopeDoc::OnEditPlacecup()
 {
 	// TODO: Add your command handler code here
-	if (m_dlg.DoModal() == IDOK)
-	{
-		m_cupX = m_dlg.m_x1;  
-		m_cupY = m_dlg.m_y1;
-
-		DrawStarbucks(m_image, m_x1, m_y1);
-		UpdateAllViews(NULL);
-	}
+	
 }
 
 
-
-
-
+void CRotoScopeDoc::OnEditScalecup()
+{
+	// TODO: Add your command handler code here
+	CScaleCupDlg dlg;
+	dlg.m_scale = m_cupScale;
+	if (dlg.DoModal() == IDOK)
+	{
+		m_cupScale = dlg.m_scale;
+	}
+}
