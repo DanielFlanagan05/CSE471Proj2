@@ -55,6 +55,7 @@ BEGIN_MESSAGE_MAP(CRotoScopeDoc, CDocument)
 	ON_COMMAND(ID_EDIT_WARPCUP, &CRotoScopeDoc::OnEditWarpcup)
 	ON_COMMAND(ID_EDIT_PLACECUP, &CRotoScopeDoc::OnEditPlacecup)
 	ON_COMMAND(ID_EDIT_SCALECUP, &CRotoScopeDoc::OnEditScalecup)
+	ON_COMMAND(ID_EDIT_CHANGECUPCOLOR, &CRotoScopeDoc::OnEditChangecupcolor)
 END_MESSAGE_MAP()
 
 
@@ -463,7 +464,11 @@ void CRotoScopeDoc::Mouse(int p_x, int p_y)
 			// Assuming WarpImage modifies the m_starbucks image directly
 			WarpImage(m_starbucks);
 		}
-
+		if (m_isChangingColor)
+		{
+			
+			RecolorImage(m_starbucks);	
+		}
 		DrawStarbucks(m_image, x, y);
 		UpdateAllViews(NULL);
 	
@@ -1148,3 +1153,74 @@ void CRotoScopeDoc::OnEditScalecup()
 		m_cupScale = dlg.m_scale;
 	}
 }
+
+
+void CRotoScopeDoc::OnEditChangecupcolor()
+{
+	// TODO: Add your command handler code here
+	m_isChangingColor = !m_isChangingColor;
+	UpdateAllViews(NULL);
+}
+
+void CRotoScopeDoc::RecolorImage(CGrImage& image)
+{
+	int width = image.GetWidth();
+	int height = image.GetHeight();
+
+	CGrImage recoloredImage;
+	recoloredImage.SetSize(width, height, image.GetPlanes());
+	recoloredImage.Fill(0, 0, 0); // Initialize with black (or transparent)
+
+	const int pinkR = 255;
+	const int pinkG = 105;
+	const int pinkB = 180;
+	const float alpha = 0.5f; // Blending factor (0.0 = original color, 1.0 = full pink)
+
+	for (int y = 0; y < height; ++y)
+	{
+		for (int x = 0; x < width; ++x)
+		{
+			int r = image[y][x * image.GetPlanes() + 2];
+			int g = image[y][x * image.GetPlanes() + 1];
+			int b = image[y][x * image.GetPlanes() + 0];
+
+			// Change all non-black pixels to a blended pink
+			if (!(r == 0 && g == 0 && b == 0)) // Skip pure black pixels
+			{
+				int blendedR = static_cast<int>(r * (1 - alpha) + pinkR * alpha);
+				int blendedG = static_cast<int>(g * (1 - alpha) + pinkG * alpha);
+				int blendedB = static_cast<int>(b * (1 - alpha) + pinkB * alpha);
+
+				if (image.GetPlanes() == 4)
+				{
+					int a = image[y][x * image.GetPlanes() + 3];
+					recoloredImage.Set(x, y, blendedR, blendedG, blendedB, a);
+				}
+				else
+				{
+					recoloredImage.Set(x, y, blendedR, blendedG, blendedB);
+				}
+			}
+			else
+			{
+				// Preserve black pixels
+				if (image.GetPlanes() == 4)
+				{
+					int a = image[y][x * image.GetPlanes() + 3];
+					recoloredImage.Set(x, y, 0, 0, 0, a);
+				}
+				else
+				{
+					recoloredImage.Set(x, y, 0, 0, 0);
+				}
+			}
+		}
+	}
+
+	// Copy the recolored image back into the original image
+	image.Copy(recoloredImage);
+}
+
+
+
+

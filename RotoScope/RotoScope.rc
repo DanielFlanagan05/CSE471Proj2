@@ -143,6 +143,7 @@ BEGIN
         MENUITEM "Warp Cup",                    ID_EDIT_WARPCUP
         MENUITEM "Place Cup",                   ID_EDIT_PLACECUP
         MENUITEM "Scale Cup",                   ID_EDIT_SCALECUP
+        MENUITEM "Change Cup Color",            ID_EDIT_CHANGECUPCOLOR
     END
     POPUP "&Movies"
     BEGIN

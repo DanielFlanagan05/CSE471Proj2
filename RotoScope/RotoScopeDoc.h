@@ -94,6 +94,8 @@ private:
 
 	double m_cupScale = 1.0;
 
+	bool m_isChangingColor = false;
+
 
 	std::stack<CGrImage>	m_images;
 
@@ -145,6 +147,10 @@ public:
 	afx_msg void OnEditPlacecup();
 	
 	afx_msg void OnEditScalecup();
+	afx_msg void OnEditChangecupcolor();
+
+	void RecolorImage(CGrImage& image);
+	
 };
 
 
