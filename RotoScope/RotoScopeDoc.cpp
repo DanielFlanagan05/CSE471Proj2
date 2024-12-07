@@ -73,6 +73,7 @@ CRotoScopeDoc::CRotoScopeDoc()
 	m_dot_count = 0;
 	m_bird.LoadFile(L"birdp.png");
 	m_phaser.LoadFile(L"tngdustbuster.png");
+	m_moviemake.SetProfileName(L"profile720p.prx");
 
 	m_phaserScale = 1.0;
 
