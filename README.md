@@ -32,4 +32,6 @@ II. Image Warping
 
 III. Keying or other Color Effects
 - Option 3: Image recoloring where colors in the image are selectively changed.
+
+  [Mia Granata's Grading Doc](MiaGranataProject2GradingDoc.pdf)
   
