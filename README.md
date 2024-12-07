@@ -15,10 +15,11 @@ I. Rotoscoping
 - Option 6: Phaser or other laser-like weapon.
 
 II. Image Warping
-- Option
+- Option 1: Some interesting non-linear image warp.
+- Specifically an image distorition effect that I apply to some of the lasers. Pause the video at 18 seconds or 11 seconds to see it in use. 
   
 III. Keying or other Color Effects
-- Option
+- N/A 
   
 
 **Mia Granata**
