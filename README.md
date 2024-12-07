@@ -16,7 +16,7 @@ I. Rotoscoping
 
 II. Image Warping
 - Option 1: Some interesting non-linear image warp.
-- Specifically an image distorition effect that I apply to some of the lasers. Pause the video at 18 seconds or 11 seconds to see it in use. 
+- Specifically an image distorition effect that I apply to some of the lasers. Pause the video at 8, 11, or 18 (most noticeable at 18) seconds to see it in use. 
   
 III. Keying or other Color Effects
 - N/A 
